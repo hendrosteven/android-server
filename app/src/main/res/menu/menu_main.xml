@@ -10,4 +10,9 @@
         android:title="Info Aplikasi"
         app:showAsAction="collapseActionView"/>
 
+    <item android:id="@+id/mnuLogout"
+        android:icon="@drawable/ic_action_info"
+        android:title="Logout"
+        app:showAsAction="collapseActionView"/>
+
 </menu>

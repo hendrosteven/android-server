@@ -1,6 +1,8 @@
 package brainmatics.com.contactnetwork;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -39,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
     List<Contact> contacts = new ArrayList<Contact>();
 
     ContactService contactService;
+    SharedPreferences sharedpreferences;
+    String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         contactService = APIClient.getClient().create(ContactService.class);
         registerForContextMenu(listContact);
+        sharedpreferences = getSharedPreferences("APP_PREFERENCE", Context.MODE_PRIVATE);
+        token = sharedpreferences.getString("TOKEN",null);
     }
 
     @Override
@@ -72,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void deleteContact(String id){
         avi.show();
-        Call<Boolean> call = contactService.removeContact(id);
+        Call<Boolean> call = contactService.removeContact(token,id);
         call.enqueue(new Callback<Boolean>() {
             @Override
             public void onResponse(Call<Boolean> call,
@@ -102,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadAllContact(){
         avi.show();
-        Call<List<Contact>> call = contactService.getAllContact();
+        Call<List<Contact>> call = contactService.getAllContact(token);
         call.enqueue(new Callback<List<Contact>>() {
             @Override
             public void onResponse(Call<List<Contact>> call,
@@ -136,6 +142,16 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.mnuInfo:
                 Toast.makeText(this,"Info Aplikasi",Toast.LENGTH_LONG).show();
+                break;
+            case R.id.mnuLogout:
+                SharedPreferences.Editor editor = sharedpreferences.edit();
+                editor.clear();
+                editor.commit();
+                Intent loginIntent = new Intent(this, LoginActivity.class);
+                loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(loginIntent);
+                finish();
                 break;
             default:
                 break;

@@ -2,7 +2,9 @@ package brainmatics.com.contactnetwork;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -23,6 +25,7 @@ import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.Email;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -31,7 +34,6 @@ import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
-import com.wang.avi.AVLoadingIndicatorView;
 
 import brainmatics.com.api.APIClient;
 import brainmatics.com.api.ContactService;
@@ -77,6 +79,8 @@ public class InputActivity extends AppCompatActivity implements Validator.Valida
     static final int GALLERY_INTENT = 1888;
 
     ContactService contactService;
+    SharedPreferences sharedpreferences;
+    String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +88,9 @@ public class InputActivity extends AppCompatActivity implements Validator.Valida
         setContentView(R.layout.activity_input);
         ButterKnife.bind(this);
         contactService = APIClient.getClient().create(ContactService.class);
+
+        sharedpreferences = getSharedPreferences("APP_PREFERENCE", Context.MODE_PRIVATE);
+        token = sharedpreferences.getString("TOKEN",null);
 
         validator = new Validator(this);
         validator.setValidationListener(this);
@@ -128,7 +135,7 @@ public class InputActivity extends AppCompatActivity implements Validator.Valida
 
     public void saveContact(Contact contact){
         avi.show();
-        Call<Contact> call = contactService.saveContact(contact);
+        Call<Contact> call = contactService.saveContact(token,contact);
         call.enqueue(new Callback<Contact>() {
             @Override
             public void onResponse(Call<Contact> call,

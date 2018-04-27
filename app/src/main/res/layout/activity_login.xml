@@ -19,15 +19,6 @@
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="8dp">
 
-            <com.wang.avi.AVLoadingIndicatorView
-                android:id="@+id/aviSave"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:foregroundGravity="center"
-                app:indicatorColor="#FFF"
-                app:indicatorName="BallPulseIndicator" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="468dp"
@@ -46,7 +37,7 @@
                     android:textSize="18sp" />
 
                 <EditText
-                    android:id="@+id/txtUsername"
+                    android:id="@+id/txtEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10" />
@@ -77,14 +68,23 @@
                     android:layout_weight="0.50"/>
 
                 <TextView
-                    android:id="@+id/lblLostPassword"
+                    android:id="@+id/lblRegister"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="10dp"
-                    android:text="Lost your password?"
-                    android:textColor="#fff"/>
+                    android:text="Register New User"
+                    android:textColor="#fff" />
 
             </LinearLayout>
+
+            <com.wang.avi.AVLoadingIndicatorView
+                android:id="@+id/avi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:layout_centerInParent="true"
+                style="@style/AVLoadingIndicatorView"
+                android:visibility="invisible"
+                app:indicatorName="BallPulseIndicator"
+                app:indicatorColor="#fff"/>
 
         </RelativeLayout>
 

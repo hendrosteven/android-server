@@ -8,6 +8,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 
@@ -18,17 +19,17 @@ import retrofit2.http.Path;
 public interface ContactService {
 
     @GET("/contact")
-    Call<List<Contact>> getAllContact();
+    Call<List<Contact>> getAllContact(@Header("Authorization") String token);
 
     @GET("/contact/{id}")
-    Call<Contact> getContactById(@Path("id") String id);
+    Call<Contact> getContactById(@Header("Authorization") String token,@Path("id") String id);
 
     @POST("/contact")
-    Call<Contact> saveContact(@Body Contact contact);
+    Call<Contact> saveContact(@Header("Authorization") String token, @Body Contact contact);
 
     @DELETE("/contact/{id}")
-    Call<Boolean> removeContact(@Path("id") String id);
+    Call<Boolean> removeContact(@Header("Authorization") String token, @Path("id") String id);
 
     @POST("/contact/search")
-    Call<List<Contact>> findByName(@Body SearchForm form);
+    Call<List<Contact>> findByName(@Header("Authorization") String token, @Body SearchForm form);
 }
